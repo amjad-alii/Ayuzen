@@ -1,0 +1,24 @@
+.otp-container {
+  margin-bottom: 1.5rem;
+}
+
+.otp-container label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #555;
+  font-weight: 500;
+}
+
+.otp-input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 1.5rem;
+  letter-spacing: 0.5rem; /* This creates space between digits */
+  outline: none;
+}
+.otp-input:focus {
+  border-color: #2563eb;
+}

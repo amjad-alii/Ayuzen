@@ -1,0 +1,123 @@
+:root {
+  --primary: #1976d2;
+  --background: #f4f7fb;
+  --card-bg: #ffffff;
+  --border: #e0e0e0;
+  --text-main: #212121;
+  --label: #65748b;
+  --focus: #1976d2;
+  --input-shadow: 0 2px 8px rgba(25,118,210,0.08);
+}
+
+.signup-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--background);
+}
+.signup-card {
+  background: var(--card-bg);
+  border-radius: 20px;
+  box-shadow: 0 10px 24px rgba(25,118,210,0.10);
+  padding: 2.6rem 2rem 2rem;
+  width: 370px;
+  max-width: 97vw;
+}
+.title {
+  font-size: 2.05rem;
+  color: var(--primary);
+  text-align: center;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+form .row {
+  display: flex;
+  gap: 1.1rem;
+}
+.floating-label-group {
+  position: relative;
+  flex: 1;
+  margin-bottom: 1.4rem;
+}
+.floating-label-group input, .floating-label-group select {
+  width: 100%;
+  font-size: 1.08rem;
+  padding: 1.25rem 0.8rem 0.54rem 0.8rem;
+  border-radius: 7px;
+  border: 1.5px solid var(--border);
+  background: #fcfdfe;
+  color: var(--text-main);
+  box-shadow: var(--input-shadow);
+  outline: none;
+  transition: border-color 0.19s;
+}
+.floating-label-group input:focus, .floating-label-group select:focus {
+  border-color: var(--focus);
+  box-shadow: 0 0 0 2px rgba(25,118,210,0.16);
+}
+.floating-label-group label {
+  position: absolute;
+  top: 1.18rem;
+  left: 0.86rem;
+  pointer-events: none;
+  font-size: 1.01rem;
+  font-weight: 500;
+  color: var(--label);
+  background: #fcfdfe;
+  padding: 0 3px;
+  border-radius: 2px;
+  transition: all 0.15s;
+  z-index: 2;
+}
+.floating-label-group input:focus + label,
+.floating-label-group input:not(:placeholder-shown):not(:focus):not([value=""]) + label,
+.floating-label-group select:focus + label,
+.floating-label-group select:not([value=""]):not(:focus) + label {
+  top: 0.44rem;
+  left: 0.72rem;
+  font-size: 0.84rem;
+  color: var(--primary);
+  font-weight: 600;
+}
+.submit-btn {
+  margin-top: 1.1rem;
+  background: var(--primary);
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  padding: 0.85rem 0;
+  cursor: pointer;
+  box-shadow: var(--input-shadow);
+  transition: background 0.19s;
+  width: 100%;
+}
+.submit-btn:disabled {
+  background: #aac7ee;
+  cursor: not-allowed;
+}
+.submit-btn:hover:not(:disabled) {
+  background: #115293;
+}
+.switch-text {
+  text-align: center;
+  margin-top: 1.45rem;
+  color: var(--label);
+  font-size: 1rem;
+  font-weight: 500;
+}
+.switch-text a {
+  color: var(--primary);
+  text-decoration: none;
+  font-weight: 700;
+}
+.switch-text a:hover {
+  text-decoration: underline;
+}
+@media (max-width: 600px) {
+  .signup-card { padding: 0.8rem; }
+  .row { flex-direction: column; gap: 0.77rem; }
+  .title { font-size: 1.3rem; }
+}

@@ -1,0 +1,116 @@
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #e0f7f1;
+  padding: 2rem 1rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.login-card {
+  background: white;
+  border-radius: 16px;
+  padding: 3rem 3.5rem;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: 0 16px 36px rgba(0, 127, 108, 0.22);
+  text-align: center;
+}
+
+.login-card h2 {
+  margin-bottom: 2rem;
+  color: #00695c;
+  font-weight: 700;
+  font-size: 1.8rem;
+}
+
+.input-group {
+  position: relative;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 1.1rem 1rem 0.25rem 1rem;
+  font-size: 1rem;
+  border: 2px solid #9cccbb;
+  border-radius: 10px;
+  background: #fcfcfc;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.input-group input:focus {
+  border-color: #00796b;
+  box-shadow: 0 0 12px #00bfa5aa;
+}
+
+.input-group label {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  color: #777;
+  font-size: 1rem;
+  pointer-events: none;
+  transition: all 0.25s ease;
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+  top: -0.45rem;
+  left: 1rem;
+  font-size: 0.75rem;
+  color: #00796b;
+  background: white;
+  padding: 0 0.3rem;
+  font-weight: 700;
+  border-radius: 4px;
+}
+
+.submit-btn {
+  width: 100%;
+  border-radius: 50px;
+  font-weight: 700;
+  padding: 1rem;
+  font-size: 1.2rem;
+  background: #00796b;
+  border: none;
+  color: white;
+  box-shadow: 0 10px 22px #00bfa5aa;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: #004d40;
+}
+
+.submit-btn:disabled {
+  background: #b2dfdb;
+  cursor: not-allowed;
+}
+
+.signup-text {
+  margin-top: 1.8rem;
+  font-size: 0.9rem;
+  color: #004d40;
+}
+
+.signup-text a {
+  color: #00796b;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.signup-text a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 480px) {
+  .login-card {
+    padding: 2rem 1.5rem;
+  }
+}

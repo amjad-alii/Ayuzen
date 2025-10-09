@@ -1,0 +1,52 @@
+.profile-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  background-color: #f8fafc;
+  padding: 2rem;
+  border-radius: 8px;
+}
+
+.profile-image {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin-right: 2rem;
+}
+
+.profile-header-info h1 {
+  margin: 0;
+}
+
+.profile-header-info .specialty {
+  font-size: 1.25rem;
+  color: #2563eb;
+  font-weight: 500;
+}
+
+.profile-body {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+.info-box {
+  background-color: #fff;
+  padding: 1.5rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.booking-box {
+    text-align: center;
+}
+
+/* Add this at the end of the file */
+.confirm-button-container {
+    margin-top: 1.5rem;
+}
