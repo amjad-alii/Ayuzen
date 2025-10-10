@@ -1,4 +1,5 @@
 package com.Ayuzen.Ayuzen.auth;
+
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -32,34 +33,39 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         String username = null;
         String jwt = null;
 
-        // Check if the header is present and formatted correctly
+        System.out.println("--- [JwtRequestFilter] Processing request for: " + request.getRequestURI());
+
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             jwt = authorizationHeader.substring(7);
             try {
                 username = jwtUtil.getUsernameFromToken(jwt);
-            } catch (IllegalArgumentException e) {
-                System.out.println("Unable to get JWT Token");
-            } catch (ExpiredJwtException e) {
-                System.out.println("JWT Token has expired");
+                System.out.println("--- [JwtRequestFilter] Token found. Username from token: " + username);
+            } catch (Exception e) {
+                System.out.println("--- [JwtRequestFilter] ERROR: Could not parse JWT token. " + e.getMessage());
             }
+        } else {
+            System.out.println("--- [JwtRequestFilter] No 'Bearer ' token found in header.");
         }
 
-        // Once we get the token, validate it.
         if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
+            System.out.println("--- [JwtRequestFilter] Security context is empty. Loading UserDetails...");
             UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
 
-            // if token is valid, configure Spring Security to manually set authentication
             if (jwtUtil.validateToken(jwt, userDetails)) {
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
+                System.out.println("--- [JwtRequestFilter] Token is VALID. Setting security context.");
+                System.out.println("--- [JwtRequestFilter] User authorities: " + userDetails.getAuthorities());
+
+                UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
-                usernamePasswordAuthenticationToken
-                        .setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                // After setting the Authentication in the context, we specify
-                // that the current user is authenticated. So it passes the Spring Security Configurations successfully.
-                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authToken);
+            } else {
+                System.out.println("--- [JwtRequestFilter] Token is INVALID.");
             }
+        } else {
+            System.out.println("--- [JwtRequestFilter] Username is null or security context is not empty.");
         }
+
         chain.doFilter(request, response);
     }
 }

@@ -37,6 +37,9 @@ public class Doctor {
 
     private String imageUrl;
 
+    private Double fee;
+
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user; // This links the Doctor to a User account
