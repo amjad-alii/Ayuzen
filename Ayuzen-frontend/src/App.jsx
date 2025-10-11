@@ -1,38 +1,51 @@
-import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
-import Navbar from './components/layout/Navbar';
-import ProtectedRoute from './components/auth/ProtectedRoute';
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Outlet,
+} from "react-router-dom";
+
+// --- Layout & Route Guards ---
+import Navbar from "./components/layout/Navbar";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import AdminRoute from "./components/auth/AdminRoute";
 
 // --- Page Imports ---
-import HomePage from './pages/HomePage';
-import LoginPage from './pages/LoginPage';
-import SignUpPage from './pages/SignUpPage';
-import AppointmentsPage from './pages/AppointmentsPage';
-import DoctorProfilePage from './pages/DoctorProfilePage';
-import DoctorsPage from './pages/DoctorsPage'; // Import the new DoctorsPage
-import AboutPage from './pages/AboutPage';   // Import the new AboutPage
-import NotFoundPage from './pages/NotFoundPage';
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import SignUpPage from "./pages/SignUpPage";
+import AppointmentsPage from "./pages/AppointmentsPage";
+import DoctorProfilePage from "./pages/DoctorProfilePage";
+import DoctorsPage from "./pages/DoctorsPage";
+import AboutPage from "./pages/AboutPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
-// --- Main Application Layout ---
-// This component wraps every page with the Navbar and consistent padding.
+// --- Admin Page Imports ---
+import AdminLayout from "./pages/admin/AdminLayout";
+import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
+import ManageDoctorsPage from './pages/admin/ManageDoctorsPage';
+// Add imports for other admin pages as you create them
+// import ManageDoctorsPage from './pages/admin/ManageDoctorsPage';
+
+// --- Main Public Application Layout ---
+// This component wraps every public page with the main Navbar.
 const AppLayout = () => (
   <>
     <Navbar />
-    <main style={{ padding: '2rem' }}>
-      {/* The <Outlet> renders the specific page component for the current route */}
+    <main style={{ padding: "2rem" }}>
       <Outlet />
     </main>
   </>
 );
 
-// --- Main Application Component with Routing ---
+// --- Main Application Component with All Routes ---
 function App() {
   return (
     <Router>
       <Routes>
-        {/* All routes are nested inside the AppLayout to share the same look and feel */}
+        {/* --- Public & User-Facing Routes --- */}
+        {/* These routes use the main AppLayout with the top Navbar */}
         <Route element={<AppLayout />}>
-
-          {/* --- Public Routes (accessible to everyone) --- */}
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignUpPage />} />
@@ -40,16 +53,24 @@ function App() {
           <Route path="/about" element={<AboutPage />} />
           <Route path="/doctor/:doctorId" element={<DoctorProfilePage />} />
 
-          {/* --- Protected Routes (only accessible after login) --- */}
+          {/* Protected routes for regular users */}
           <Route element={<ProtectedRoute />}>
             <Route path="/my-appointments" element={<AppointmentsPage />} />
-            {/* You can add more protected routes here in the future, like /profile */}
           </Route>
-
-          {/* --- Not Found Route (catches any URL that doesn't match) --- */}
-          <Route path="*" element={<NotFoundPage />} />
-          
         </Route>
+
+        {/* --- Secure Admin Routes --- */}
+        {/* These routes are first guarded by AdminRoute, then use the AdminLayout with the sidebar */}
+        <Route element={<AdminRoute />}>
+          <Route element={<AdminLayout />}>
+            <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
+            <Route path="/admin/doctors" element={<ManageDoctorsPage />} />{" "}
+            {/* ADD THIS ROUTE */}
+          </Route>
+        </Route>
+
+        {/* --- Not Found Route (Catches all other URLs) --- */}
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
   );
