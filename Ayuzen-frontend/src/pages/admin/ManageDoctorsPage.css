@@ -5,6 +5,11 @@
   margin-bottom: 2rem;
 }
 
+.manage-doctors-page h1 {
+    font-size: 2rem;
+    color: #343a40;
+}
+
 .add-doctor-btn {
   background-color: #0d9488;
   color: white;
@@ -14,13 +19,18 @@
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.add-doctor-btn:hover {
+    background-color: #0f766e;
 }
 
 .table-container {
   background-color: #fff;
   border-radius: 8px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  overflow: hidden;
+  overflow-x: auto; /* For responsiveness */
 }
 
 table {
@@ -32,24 +42,36 @@ th, td {
   padding: 1rem 1.5rem;
   text-align: left;
   border-bottom: 1px solid #dee2e6;
+  white-space: nowrap;
 }
 
 thead th {
   background-color: #f8f9fa;
   font-weight: 600;
   color: #495057;
+  text-transform: uppercase;
+  font-size: 0.8rem;
 }
 
 tbody tr:last-child td {
   border-bottom: none;
 }
 
+tbody tr:hover {
+    background-color: #f1f5f9;
+}
+
 .actions button {
   border: none;
   padding: 0.5rem 1rem;
   border-radius: 4px;
+  font-weight: 500;
   cursor: pointer;
   margin-right: 0.5rem;
+  transition: opacity 0.2s;
+}
+.actions button:hover {
+    opacity: 0.8;
 }
 
 .btn-edit {

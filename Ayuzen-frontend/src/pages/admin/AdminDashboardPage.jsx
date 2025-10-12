@@ -24,29 +24,26 @@ const AdminDashboardPage = () => {
     fetchStats();
   }, []);
 
-  // Show a skeleton loader while fetching data
   if (loading) {
-      return (
-        <div className="admin-dashboard">
-            <header className="dashboard-header">
-                <h1>Dashboard Overview</h1>
-                <p>Loading stats for today...</p>
-            </header>
-             <div className="stats-grid">
-                <div className="stat-card skeleton"></div>
-                <div className="stat-card skeleton"></div>
-                <div className="stat-card skeleton"></div>
-            </div>
+    return (
+      <div className="admin-dashboard">
+        <header className="dashboard-header">
+          <h1>Dashboard Overview</h1>
+          <p>Loading stats for today...</p>
+        </header>
+        <div className="stats-grid">
+          <div className="stat-card skeleton"></div>
+          <div className="stat-card skeleton"></div>
+          <div className="stat-card skeleton"></div>
         </div>
-      );
-  }
-  
-  // Show an error message if the API call fails
-  if (error) {
-      return <div className="admin-dashboard"><h2 style={{ color: 'red' }}>Error: {error}</h2></div>;
+      </div>
+    );
   }
 
-  // Render the dashboard with data once loading is complete
+  if (error) {
+    return <div className="admin-dashboard error-message">Error: {error}</div>;
+  }
+
   return (
     <div className="admin-dashboard">
       <header className="dashboard-header">

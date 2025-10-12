@@ -25,6 +25,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import ManageDoctorsPage from './pages/admin/ManageDoctorsPage';
+import ClinicAppointmentsPage from "./pages/admin/ClinicAppointmentsPage";
 
 // --- Main Public Application Layout ---
 const AppLayout = () => (
@@ -67,6 +68,7 @@ function App() {
           <Route element={<AdminLayout />}>
             <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
             <Route path="/admin/doctors" element={<ManageDoctorsPage />} />
+            <Route path="/admin/appointments" element={<ClinicAppointmentsPage />} /> 
           </Route>
         </Route>
 
