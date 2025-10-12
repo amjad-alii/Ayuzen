@@ -9,12 +9,14 @@ const AdminDashboardPage = () => {
 
   useEffect(() => {
     const fetchStats = async () => {
+      setLoading(true);
+      setError(null);
       try {
-        const response = await apiClient.get('/admin/dashboard-stats');
+        const response = await apiClient.get('/admin/dashboard');
         setStats(response.data);
       } catch (err) {
         console.error("Failed to fetch dashboard stats", err);
-        setError("Could not load dashboard data. Please check server logs.");
+        setError("Could not load dashboard data. Please ensure the backend is running and you are authorized.");
       } finally {
         setLoading(false);
       }
@@ -22,27 +24,50 @@ const AdminDashboardPage = () => {
     fetchStats();
   }, []);
 
-  if (loading) return <h2>Loading Admin Dashboard...</h2>;
-  if (error) return <h2 style={{color: 'red'}}>Error: {error}</h2>;
+  // Show a skeleton loader while fetching data
+  if (loading) {
+      return (
+        <div className="admin-dashboard">
+            <header className="dashboard-header">
+                <h1>Dashboard Overview</h1>
+                <p>Loading stats for today...</p>
+            </header>
+             <div className="stats-grid">
+                <div className="stat-card skeleton"></div>
+                <div className="stat-card skeleton"></div>
+                <div className="stat-card skeleton"></div>
+            </div>
+        </div>
+      );
+  }
+  
+  // Show an error message if the API call fails
+  if (error) {
+      return <div className="admin-dashboard"><h2 style={{ color: 'red' }}>Error: {error}</h2></div>;
+  }
 
+  // Render the dashboard with data once loading is complete
   return (
-    <div>
-      <h1>Admin Dashboard</h1>
-      <p>Welcome, Admin! Here are the clinic's stats for today, {new Date().toLocaleDateString()}.</p>
+    <div className="admin-dashboard">
+      <header className="dashboard-header">
+        <h1>Dashboard Overview</h1>
+        <p>Today is {new Date().toLocaleDateString('en-IN', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}.</p>
+      </header>
       <div className="stats-grid">
         <div className="stat-card">
           <h3>Total Doctors</h3>
-          {/* Use a fallback value if stats is null */}
-          <span>{stats?.totalDoctors ?? 'N/A'}</span>
+          <span className="stat-value">{stats?.totalDoctors ?? '0'}</span>
+          <p className="stat-description">Currently active on the platform</p>
         </div>
         <div className="stat-card">
           <h3>Appointments Today</h3>
-          <span>{stats?.appointmentsToday ?? 'N/A'}</span>
+          <span className="stat-value">{stats?.appointmentsToday ?? '0'}</span>
+          <p className="stat-description">Scheduled for today</p>
         </div>
         <div className="stat-card">
           <h3>Revenue Today</h3>
-          {/* This is the key fix: Check before calling toLocaleString and provide a default */}
-          <span>₹{(stats?.totalRevenueToday ?? 0).toLocaleString('en-IN')}</span>
+          <span className="stat-value">₹{(stats?.totalRevenueToday ?? 0).toLocaleString('en-IN')}</span>
+          <p className="stat-description">From confirmed appointments</p>
         </div>
       </div>
     </div>
@@ -50,4 +75,3 @@ const AdminDashboardPage = () => {
 };
 
 export default AdminDashboardPage;
-

@@ -4,6 +4,7 @@ import {
   Route,
   Outlet,
 } from "react-router-dom";
+import { useAuth } from "./context/AuthContext"; // Import useAuth
 
 // --- Layout & Route Guards ---
 import Navbar from "./components/layout/Navbar";
@@ -24,11 +25,8 @@ import NotFoundPage from "./pages/NotFoundPage";
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
 import ManageDoctorsPage from './pages/admin/ManageDoctorsPage';
-// Add imports for other admin pages as you create them
-// import ManageDoctorsPage from './pages/admin/ManageDoctorsPage';
 
 // --- Main Public Application Layout ---
-// This component wraps every public page with the main Navbar.
 const AppLayout = () => (
   <>
     <Navbar />
@@ -40,11 +38,18 @@ const AppLayout = () => (
 
 // --- Main Application Component with All Routes ---
 function App() {
+  const { isLoading } = useAuth(); // Get the loading state from the context
+
+  // If the app is still checking for an existing token, show a loading screen.
+  // This prevents the router from rendering and causing a premature redirect.
+  if (isLoading) {
+    return <div>Loading Application...</div>;
+  }
+
   return (
     <Router>
       <Routes>
-        {/* --- Public & User-Facing Routes --- */}
-        {/* These routes use the main AppLayout with the top Navbar */}
+        {/* Public & User-Facing Routes */}
         <Route element={<AppLayout />}>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<LoginPage />} />
@@ -52,24 +57,20 @@ function App() {
           <Route path="/doctors" element={<DoctorsPage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/doctor/:doctorId" element={<DoctorProfilePage />} />
-
-          {/* Protected routes for regular users */}
           <Route element={<ProtectedRoute />}>
             <Route path="/my-appointments" element={<AppointmentsPage />} />
           </Route>
         </Route>
 
-        {/* --- Secure Admin Routes --- */}
-        {/* These routes are first guarded by AdminRoute, then use the AdminLayout with the sidebar */}
+        {/* Secure Admin Routes */}
         <Route element={<AdminRoute />}>
           <Route element={<AdminLayout />}>
             <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
-            <Route path="/admin/doctors" element={<ManageDoctorsPage />} />{" "}
-            {/* ADD THIS ROUTE */}
+            <Route path="/admin/doctors" element={<ManageDoctorsPage />} />
           </Route>
         </Route>
 
-        {/* --- Not Found Route (Catches all other URLs) --- */}
+        {/* Not Found Route */}
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Router>
