@@ -1,12 +1,16 @@
-.manage-doctors-page {
-  max-width: 1100px;
-  margin: 25px auto;
-  padding: 0 20px 40px;
+/* Reset and base styles */
+* {
+  box-sizing: border-box;
+}
+
+.appointments-page-container {
+  max-width: 1150px;
+  margin: 30px auto;
+  padding: 20px;
+  background: #f7fafc;
+  border-radius: 14px;
+  box-shadow: 0 2px 16px rgba(44, 62, 80, 0.06);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  color: #222;
-  background-color: #fcfcfc;
-  border-radius: 8px;
-  box-shadow: 0 3px 15px rgba(0,0,0,0.05);
 }
 
 .page-header {
@@ -15,130 +19,240 @@
 }
 
 .page-header h1 {
+  font-size: 2.4rem;
   font-weight: 700;
-  font-size: 2rem;
-  color: #1e40af;
+  color: #1a202c;
+  letter-spacing: 1px;
+}
+
+.filter-controls {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.search-input {
+  height: 38px;
+  width: 240px;
+  border: 1px solid #93c5fd;
+  border-radius: 8px;
+  padding: 0 12px;
+  font-size: 1rem;
+  background: #fff;
+  color: #373f51;
+  transition: border-color 0.2s;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #2563eb;
+}
+
+.filter-select {
+  height: 38px;
+  font-size: 1rem;
+  border: 1px solid #93c5fd;
+  border-radius: 8px;
+  padding: 0 8px;
+  background: #fff;
+  color: #373f51;
 }
 
 .table-container {
   overflow-x: auto;
   border-radius: 10px;
-  box-shadow: 0 0 10px rgba(30, 64, 175, 0.1);
+  margin-bottom: 18px;
   background: #fff;
+  box-shadow: 0 0 8px rgba(59,130,246,0.09);
 }
 
-.appointments-table {
+table {
   width: 100%;
   border-collapse: separate;
-  border-spacing: 0 12px;
-  min-width: 600px;
+  border-spacing: 0 10px;
+  min-width: 680px;
 }
 
-.appointments-table thead th {
+th, td {
+  padding: 13px 14px;
   text-align: left;
-  padding: 12px 15px;
-  font-weight: 600;
   font-size: 1rem;
-  color: #334155;
-  border-bottom: 2px solid #e2e8f0;
-  background-color: #f1f5f9;
+}
+
+thead th {
+  background: #e3eafe;
+  color: #27313e;
+  font-weight: 600;
+  border-bottom: 2px solid #dbeafe;
+  z-index: 1;
   position: sticky;
   top: 0;
-  z-index: 1;
 }
 
-.appointments-table tbody tr {
-  background: #fafafa;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  transition: background-color 0.2s ease;
+tbody tr {
+  background: #f9fafb;
+  transition: background 0.2s;
 }
 
-.appointments-table tbody tr:hover {
-  background-color: #e0e7ff;
-}
-
-.appointments-table td {
-  padding: 14px 15px;
-  color: #475569;
-  vertical-align: middle;
-  font-size: 0.95rem;
-  border-bottom: none;
+tbody tr:hover {
+  background: #e0e7ff;
 }
 
 .status-pill {
-  display: inline-block;
-  padding: 6px 14px;
-  border-radius: 20px;
+  padding: 6px 15px;
+  border-radius: 12px;
+  color: #fff;
+  font-size: 0.95rem;
   font-weight: 600;
-  font-size: 0.85rem;
   text-transform: capitalize;
-  color: white;
-  user-select: none;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  display: inline-block;
 }
 
-/* Status colors */
 .status-pending {
-  background-color: #f59e0b; /* amber */
+  background: linear-gradient(90deg, #f59e0b 60%, #fde68a 100%);
+  color: #514215;
 }
-
 .status-confirmed {
-  background-color: #10b981; /* emerald */
+  background: linear-gradient(90deg, #06b6d4 60%, #67e8f9 100%);
+  color: #024e68;
 }
-
 .status-cancelled {
-  background-color: #ef4444; /* red */
+  background: linear-gradient(90deg, #dc2626 60%, #fecaca 100%);
+  color: #631313;
 }
-
 .status-completed {
-  background-color: #3b82f6; /* blue */
+  background: linear-gradient(90deg, #22c55e 60%, #bbf7d0 100%);
+  color: #065f46;
 }
 
-/* Loading and error message styling */
-.loading-message,
-.error-message {
-  max-width: 700px;
-  margin: 50px auto;
-  padding: 20px;
-  text-align: center;
+.actions {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-confirm, .btn-cancel {
+  padding: 6px 15px;
+  font-size: 0.93rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  font-weight: 500;
+}
+
+.btn-confirm {
+  background: #10b981;
+  color: #fff;
+}
+
+.btn-confirm:hover {
+  background: #059669;
+}
+
+.btn-cancel {
+  background: #ef4444;
+  color: #fff;
+}
+
+.btn-cancel:hover {
+  background: #b91c1c;
+}
+
+/* Pagination */
+.pagination-controls {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.pagination-controls button {
+  background: #6366f1;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  padding: 7px 20px;
   font-weight: 600;
-  font-size: 1.2rem;
-  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.16s;
 }
 
+.pagination-controls button[disabled] {
+  background: #e0e7ef;
+  color: #888;
+  cursor: not-allowed;
+}
+
+.pagination-controls span {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #303850;
+}
+
+/* Error & loading */
 .error-message {
-  color: #b91c1c;
-  background-color: #fee2e2;
+  color: #be123c;
+  background: #ffe4e6;
   border: 1px solid #fca5a5;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 15px;
+  text-align: center;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .manage-doctors-page {
-    margin: 15px auto;
-    padding-bottom: 30px;
+/* Responsive styles */
+@media (max-width: 900px) {
+  .appointments-page-container {
+    padding: 10px;
   }
-
-  .page-header h1 {
-    font-size: 1.6rem;
-  }
-
-  .appointments-table {
+  table,
+  .table-container {
     min-width: 500px;
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 600px) {
+  .appointments-page-container {
+    padding: 3px;
+    border-radius: 4px;
+  }
   .page-header h1 {
-    font-size: 1.3rem;
+    font-size: 1.25rem;
   }
-
-  .appointments-table {
-    min-width: 400px;
+  .filter-controls {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    margin-bottom: 9px;
   }
+  table, .table-container {
+    min-width: 370px;
+  }
+  th, td {
+    padding: 7px 7px;
+    font-size: 0.91rem;
+  }
+  .btn-confirm, .btn-cancel {
+    padding: 5px 9px;
+    font-size: 0.89rem;
+  }
+}
 
-  .appointments-table thead th,
-  .appointments-table td {
-    padding: 10px 8px;
-    font-size: 0.85rem;
+@media (max-width: 430px) {
+  .appointments-page-container {
+    padding: 0;
+  }
+  .pagination-controls span, .pagination-controls button {
+    font-size: 0.93rem;
+    padding: 6px 8px;
   }
 }
