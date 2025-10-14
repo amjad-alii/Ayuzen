@@ -53,12 +53,18 @@ public class SecurityConfig {
                 .cors(cors -> {})
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/**", "/api/doctors/**").permitAll()
-                        .requestMatchers("/api/admin/**").permitAll()
+                        // Rule 1: Allow public access to auth and the public doctors list
+                        .requestMatchers("/api/auth/**", "/api/doctors").permitAll()
+
+                        // Rule 2: THIS IS THE FIX. Secure all admin endpoints for admin/receptionist roles.
+                        .requestMatchers("/api/admin/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_RECEPTIONIST")
+
+
+                        // Rule 3: All other requests must be authenticated
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider()); // Explicitly set the provider
+                .authenticationProvider(authenticationProvider());
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 

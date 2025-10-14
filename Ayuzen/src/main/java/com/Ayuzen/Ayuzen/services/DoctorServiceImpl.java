@@ -26,4 +26,25 @@ public class DoctorServiceImpl implements DoctorService {
                 .map(doctor -> modelMapper.map(doctor, DoctorDTO.class))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public DoctorDTO updateDoctor(Long id, DoctorDTO doctorDTO) {
+        Doctor doctor = doctorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Doctor not found with id: " + id));
+
+        // Use ModelMapper to update fields from the DTO
+        modelMapper.map(doctorDTO, doctor);
+        doctor.setId(id); // Ensure the ID is not changed
+
+        Doctor updatedDoctor = doctorRepository.save(doctor);
+        return modelMapper.map(updatedDoctor, DoctorDTO.class);
+    }
+
+    @Override
+    public void deleteDoctor(Long id) {
+        if (!doctorRepository.existsById(id)) {
+            throw new RuntimeException("Doctor not found with id: " + id);
+        }
+        doctorRepository.deleteById(id);
+    }
 }

@@ -4,4 +4,6 @@ import java.util.List;
 
 public interface DoctorService {
     List<DoctorDTO> getAllDoctors();
+    DoctorDTO updateDoctor(Long id, DoctorDTO doctorDTO);
+    void deleteDoctor(Long id);
 }
