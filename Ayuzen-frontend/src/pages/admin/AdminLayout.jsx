@@ -19,6 +19,9 @@ const AdminLayout = () => {
           </NavLink>
 
           <NavLink to="/admin/calendar" className={({isActive}) => `admin-nav-link ${isActive ? 'active' : ''}`}>Calendar View</NavLink> 
+          <NavLink to="/admin/patients" className={({isActive}) => `admin-nav-link ${isActive ? 'active' : ''}`}>
+            Manage Patients
+          </NavLink>
         </nav>
       </aside>
       <main className="admin-content">
