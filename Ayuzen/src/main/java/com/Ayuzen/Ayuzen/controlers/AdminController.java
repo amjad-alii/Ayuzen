@@ -39,7 +39,7 @@ public class AdminController {
         return ResponseEntity.ok(adminService.getDashboardStats());
     }
 
-    // ... inside AdminController.java
+
 
     // PUT to update an existing doctor
     @PutMapping("/doctors/{id}")
@@ -78,5 +78,19 @@ public class AdminController {
     @GetMapping("/patients")
     public ResponseEntity<List<PatientListDTO>> getAllPatients() {
         return ResponseEntity.ok(patientService.getAllPatients());
+    }
+
+    // ENDPOINT TO GET A SINGLE PATIENT'S DETAILS
+    @GetMapping("/patients/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_RECEPTIONIST')")
+    public ResponseEntity<UserDTO> getPatientById(@PathVariable Long id) {
+        return ResponseEntity.ok(patientService.getPatientById(id));
+    }
+
+    // ENDPOINT TO GET A SINGLE PATIENT'S APPOINTMENT HISTORY
+    @GetMapping("/patients/{id}/appointments")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN', 'ROLE_RECEPTIONIST')")
+    public ResponseEntity<List<AppointmentDTO>> getPatientAppointments(@PathVariable Long id) {
+        return ResponseEntity.ok(appointmentService.getAppointmentsForPatient(id));
     }
 }

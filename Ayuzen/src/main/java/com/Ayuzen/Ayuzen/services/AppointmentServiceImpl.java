@@ -105,8 +105,6 @@ public class AppointmentServiceImpl implements AppointmentService {
         return modelMapper.map(updatedAppointment, AppointmentDTO.class);
     }
 
-    // ... inside AppointmentServiceImpl.java
-
     @Override
     @Transactional
     public AppointmentDTO createAppointmentForPatient(AdminBookingRequestDTO bookingRequest) {
@@ -127,5 +125,14 @@ public class AppointmentServiceImpl implements AppointmentService {
         return modelMapper.map(savedAppointment, AppointmentDTO.class);
     }
 
+    @Override
+    @Transactional
+    public List<AppointmentDTO> getAppointmentsForPatient(Long patientId) {
+        // We already have the findByUserId method in the repository
+        List<Appointment> appointments = appointmentRepository.findByUserId(patientId);
+        return appointments.stream()
+                .map(appointment -> modelMapper.map(appointment, AppointmentDTO.class))
+                .collect(Collectors.toList());
+    }
     // 5. The manual convertToDto method is no longer needed and can be deleted.
 }
