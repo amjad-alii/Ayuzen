@@ -61,3 +61,23 @@ tbody tr:hover { background-color: #f1f5f9; }
     opacity: 0.5;
     cursor: not-allowed;
 }
+.patient-contact {
+    color: #6c757d;
+    font-size: 1rem;
+    margin-top: 0.5rem;
+}
+
+.back-button {
+    background-color: #f1f5f9;
+    color: #475569;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.no-data-message {
+    padding: 2rem;
+    text-align: center;
+    color: #6c757d;
+}

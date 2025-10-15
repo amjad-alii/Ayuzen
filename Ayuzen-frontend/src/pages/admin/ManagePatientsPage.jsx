@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { Link } from 'react-router-dom'; // 1. Import the Link component
 import apiClient from '../../services/authService';
-import './ManagePatientsPage.css'; // We'll create this new CSS file
+import './ManagePatientsPage.css';
 
 const ManagePatientsPage = () => {
     const [patients, setPatients] = useState([]);
@@ -29,20 +30,18 @@ const ManagePatientsPage = () => {
         fetchPatients();
     }, []);
 
-    // Memoize the search results for performance
     const filteredPatients = useMemo(() => {
         return patients.filter(patient =>
             patient.fullName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-            patient.email?.toLowerCase().includes(searchTerm.toLowerCase())
+            (patient.email && patient.email.toLowerCase().includes(searchTerm.toLowerCase()))
         );
     }, [patients, searchTerm]);
 
-    // Pagination logic
     const totalPages = Math.ceil(filteredPatients.length / itemsPerPage);
     const paginatedPatients = filteredPatients.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     useEffect(() => {
-        setCurrentPage(1); // Reset to first page when search term changes
+        setCurrentPage(1);
     }, [searchTerm]);
 
     if (isLoading) return <h2>Loading Patient Database...</h2>;
@@ -80,7 +79,10 @@ const ManagePatientsPage = () => {
                                 <td>{patient.phone || 'N/A'}</td>
                                 <td>{patient.age}</td>
                                 <td className="actions">
-                                    <button className="btn-view">View History</button>
+                                    {/* 2. Replace the <button> with a <Link> component */}
+                                    <Link to={`/admin/patients/${patient.id}`} className="btn-view">
+                                        View History
+                                    </Link>
                                 </td>
                             </tr>
                         ))}
@@ -88,7 +90,6 @@ const ManagePatientsPage = () => {
                 </table>
             </div>
 
-            {/* Pagination Controls */}
             <div className="pagination-controls">
                 <button onClick={() => setCurrentPage(p => Math.max(1, p - 1))} disabled={currentPage === 1}>
                     Previous

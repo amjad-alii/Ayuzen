@@ -28,6 +28,7 @@ import ManageDoctorsPage from './pages/admin/ManageDoctorsPage';
 import ClinicAppointmentsPage from "./pages/admin/ClinicAppointmentsPage";
 import ClinicCalendarPage from "./pages/admin/ClinicCalendarPage";
 import ManagePatientsPage from "./pages/admin/ManagePatientsPage";
+import PatientHistoryPage from "./pages/admin/PatientHistoryPage";
 
 // --- Main Public Application Layout ---
 const AppLayout = () => (
@@ -73,6 +74,7 @@ function App() {
             <Route path="/admin/appointments" element={<ClinicAppointmentsPage />} />
             <Route path="/admin/calendar" element={<ClinicCalendarPage />} /> 
             <Route path="/admin/patients" element={<ManagePatientsPage />} />
+            <Route path="/admin/patients/:patientId" element={<PatientHistoryPage />} />
           </Route>
         </Route>
 
