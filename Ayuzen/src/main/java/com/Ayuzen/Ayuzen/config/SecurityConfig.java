@@ -20,7 +20,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     @Autowired
@@ -56,15 +56,14 @@ public class SecurityConfig {
                         // Rule 1: Allow public access to auth and the public doctors list
                         .requestMatchers("/api/auth/**", "/api/doctors").permitAll()
 
-                        // Rule 2: THIS IS THE FIX. Secure all admin endpoints for admin/receptionist roles.
-                        .requestMatchers("/api/admin/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_RECEPTIONIST")
-
+                        // Rule 2: THE DEFINITIVE FIX. Secure admin endpoints.
+                        .requestMatchers("/api/admin/**").hasAuthority("ROLE_ADMIN")
 
                         // Rule 3: All other requests must be authenticated
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider());
+                .authenticationProvider(authenticationProvider()); // Explicitly set the provider
 
         http.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 

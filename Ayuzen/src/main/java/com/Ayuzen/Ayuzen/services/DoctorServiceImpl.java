@@ -28,6 +28,13 @@ public class DoctorServiceImpl implements DoctorService {
     }
 
     @Override
+    public DoctorDTO createDoctor(DoctorDTO doctorDTO) {
+        Doctor doctor = modelMapper.map(doctorDTO, Doctor.class);
+        Doctor newDoctor = doctorRepository.save(doctor);
+       return modelMapper.map(newDoctor, DoctorDTO.class);
+    }
+
+    @Override
     public DoctorDTO updateDoctor(Long id, DoctorDTO doctorDTO) {
         Doctor doctor = doctorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Doctor not found with id: " + id));

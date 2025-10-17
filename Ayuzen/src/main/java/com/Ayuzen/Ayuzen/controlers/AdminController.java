@@ -33,12 +33,20 @@ public class AdminController {
     @Autowired
     private PatientService patientService;
 
+    @PutMapping("/doctor")
+    public ResponseEntity<DoctorDTO> createDoctor(@RequestBody DoctorDTO doctorDTO){
+        return  ResponseEntity.ok(doctorService.createDoctor(doctorDTO));
+    }
 
     @GetMapping("/dashboard")
     public ResponseEntity<DashboardStatsDTO> getDashboardStats() {
         return ResponseEntity.ok(adminService.getDashboardStats());
     }
 
+    @GetMapping("/doctors")
+    public ResponseEntity<List<DoctorDTO>> getAllDoctors() {
+        return ResponseEntity.ok(doctorService.getAllDoctors());
+    }
 
 
     // PUT to update an existing doctor
