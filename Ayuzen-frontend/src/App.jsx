@@ -24,11 +24,12 @@ import NotFoundPage from "./pages/NotFoundPage";
 // --- Admin Page Imports ---
 import AdminLayout from "./pages/admin/AdminLayout";
 import AdminDashboardPage from "./pages/admin/AdminDashboardPage";
-import ManageDoctorsPage from './pages/admin/ManageDoctorsPage';
+import ManageDoctorsPage from "./pages/admin/ManageDoctorsPage";
 import ClinicAppointmentsPage from "./pages/admin/ClinicAppointmentsPage";
 import ClinicCalendarPage from "./pages/admin/ClinicCalendarPage";
 import ManagePatientsPage from "./pages/admin/ManagePatientsPage";
 import PatientHistoryPage from "./pages/admin/PatientHistoryPage";
+import ClinicSettingsPage from "./pages/admin/ClinicSettingsPage";
 
 // --- Main Public Application Layout ---
 const AppLayout = () => (
@@ -71,10 +72,17 @@ function App() {
           <Route element={<AdminLayout />}>
             <Route path="/admin/dashboard" element={<AdminDashboardPage />} />
             <Route path="/admin/doctors" element={<ManageDoctorsPage />} />
-            <Route path="/admin/appointments" element={<ClinicAppointmentsPage />} />
-            <Route path="/admin/calendar" element={<ClinicCalendarPage />} /> 
+            <Route
+              path="/admin/appointments"
+              element={<ClinicAppointmentsPage />}
+            />
+            <Route path="/admin/calendar" element={<ClinicCalendarPage />} />
             <Route path="/admin/patients" element={<ManagePatientsPage />} />
-            <Route path="/admin/patients/:patientId" element={<PatientHistoryPage />} />
+            <Route
+              path="/admin/patients/:patientId"
+              element={<PatientHistoryPage />}
+            />
+            <Route path="/admin/settings" element={<ClinicSettingsPage />} />
           </Route>
         </Route>
 

@@ -1,0 +1,90 @@
+.clinic-settings-page h1 {
+    margin-bottom: 2rem;
+    color: #343a40;
+}
+
+.settings-section {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+}
+
+.settings-section h2 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    color: #495057;
+    border-bottom: 1px solid #dee2e6;
+    padding-bottom: 0.75rem;
+}
+
+.settings-form, .add-holiday-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.form-group label {
+    font-weight: 500;
+    color: #495057;
+}
+
+.form-group input, .add-holiday-form input, .add-holiday-form .react-datepicker-wrapper input {
+    padding: 0.75rem;
+    border: 1px solid #dee2e6;
+    border-radius: 6px;
+    font-size: 1rem;
+}
+
+.save-button, .add-button {
+    background-color: #0d9488;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    height: fit-content; /* Align button height */
+}
+
+.holiday-list {
+    list-style: none;
+    padding: 0;
+}
+
+.holiday-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.holiday-list li span {
+    color: #343a40;
+}
+
+.delete-button {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.error-message {
+    color: #b91c1c;
+    font-weight: bold;
+}
