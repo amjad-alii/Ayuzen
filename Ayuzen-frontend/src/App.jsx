@@ -10,6 +10,7 @@ import { useAuth } from "./context/AuthContext"; // Import useAuth
 import Navbar from "./components/layout/Navbar";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import AdminRoute from "./components/auth/AdminRoute";
+import DoctorRoute from "./components/auth/DoctorRoute";
 
 // --- Page Imports ---
 import HomePage from "./pages/HomePage";
@@ -30,6 +31,9 @@ import ClinicCalendarPage from "./pages/admin/ClinicCalendarPage";
 import ManagePatientsPage from "./pages/admin/ManagePatientsPage";
 import PatientHistoryPage from "./pages/admin/PatientHistoryPage";
 import ClinicSettingsPage from "./pages/admin/ClinicSettingsPage";
+
+// --- Doctor Page Imports ---
+import DoctorDashboardPage from './pages/doctor/DoctorDashboardPage'; // 2. Import Doctor Page
 
 // --- Main Public Application Layout ---
 const AppLayout = () => (
@@ -84,6 +88,12 @@ function App() {
             />
             <Route path="/admin/settings" element={<ClinicSettingsPage />} />
           </Route>
+        </Route>
+
+        {/* Secure Doctor Routes */}
+        <Route element={<DoctorRoute />}>
+          {/* 3. Add the doctor dashboard route */}
+          <Route path="/doctor/dashboard" element={<DoctorDashboardPage />} />
         </Route>
 
         {/* Not Found Route */}
