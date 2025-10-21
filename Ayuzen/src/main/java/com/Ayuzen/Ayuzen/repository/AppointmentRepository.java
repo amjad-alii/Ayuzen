@@ -12,10 +12,11 @@ import java.util.List;
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
     List<Appointment> findByUserId(Long userId);
 
-    // ADD THESE NEW METHODS
+
     @Query("SELECT COUNT(a) FROM Appointment a WHERE a.appointmentDateTime >= :startOfDay AND a.appointmentDateTime < :endOfDay")
     long countByAppointmentDateTimeBetween(@Param("startOfDay") LocalDateTime startOfDay, @Param("endOfDay") LocalDateTime endOfDay);
 
     @Query("SELECT SUM(d.fee) FROM Appointment a JOIN a.doctor d WHERE a.appointmentDateTime >= :startOfDay AND a.appointmentDateTime < :endOfDay AND a.status = 'CONFIRMED'")
     Double findTotalRevenueForDay(@Param("startOfDay") LocalDateTime startOfDay, @Param("endOfDay") LocalDateTime endOfDay);
+    List<Appointment> findByDoctorId(Long doctorId);
 }

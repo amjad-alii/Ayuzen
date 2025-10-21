@@ -14,4 +14,5 @@ public interface AppointmentService {
     AppointmentDTO updateAppointmentStatus(Long appointmentId, AppointmentStatus status);
     AppointmentDTO createAppointmentForPatient(AdminBookingRequestDTO bookingRequest);
     List<AppointmentDTO> getAppointmentsForPatient(Long patientId);
+    List<AppointmentDTO> getAppointmentsForDoctor(String doctorEmail);
 }

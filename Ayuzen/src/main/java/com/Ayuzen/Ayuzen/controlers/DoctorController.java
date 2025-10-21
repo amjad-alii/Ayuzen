@@ -2,10 +2,14 @@ package com.Ayuzen.Ayuzen.controlers;
 
 
 
+import com.Ayuzen.Ayuzen.dto.AppointmentDTO;
 import com.Ayuzen.Ayuzen.dto.DoctorDTO;
+import com.Ayuzen.Ayuzen.services.AppointmentService;
 import com.Ayuzen.Ayuzen.services.DoctorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,9 +21,20 @@ public class DoctorController {
 
     @Autowired
     private DoctorService doctorService;
+    @Autowired
+    private AppointmentService appointmentService;
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('ROLE_DOCTOR')")
     public ResponseEntity<List<DoctorDTO>> getAllDoctors() {
         return ResponseEntity.ok(doctorService.getAllDoctors());
+    }
+
+    @GetMapping("/my-appointments")
+    @PreAuthorize("hasAnyAuthority('ROLE_DOCTOR')")
+    public ResponseEntity<List<AppointmentDTO>> getMySchedule(Authentication authentication) {
+        String doctorEmail = authentication.getName();
+        List<AppointmentDTO> appointments = appointmentService.getAppointmentsForDoctor(doctorEmail);
+        return ResponseEntity.ok(appointments);
     }
 }

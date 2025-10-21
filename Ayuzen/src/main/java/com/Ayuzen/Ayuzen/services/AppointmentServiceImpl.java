@@ -134,5 +134,18 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .map(appointment -> modelMapper.map(appointment, AppointmentDTO.class))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    @Transactional
+    public List<AppointmentDTO> getAppointmentsForDoctor(String doctorEmail) {
+        Doctor doctor = doctorRepository.findByUserEmail(doctorEmail)
+                .orElseThrow(() -> new RuntimeException("Doctor profile not found for email: " + doctorEmail));
+
+        List<Appointment> appointments = appointmentRepository.findByDoctorId(doctor.getId());
+
+        return appointments.stream()
+                .map(appointment -> modelMapper.map(appointment, AppointmentDTO.class))
+                .collect(Collectors.toList());
+    }
     // 5. The manual convertToDto method is no longer needed and can be deleted.
 }
