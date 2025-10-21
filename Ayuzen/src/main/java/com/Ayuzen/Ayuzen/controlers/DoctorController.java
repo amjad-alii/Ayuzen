@@ -25,13 +25,11 @@ public class DoctorController {
     private AppointmentService appointmentService;
 
     @GetMapping
-    @PreAuthorize("hasAnyAuthority('ROLE_DOCTOR')")
     public ResponseEntity<List<DoctorDTO>> getAllDoctors() {
         return ResponseEntity.ok(doctorService.getAllDoctors());
     }
 
     @GetMapping("/my-appointments")
-    @PreAuthorize("hasAnyAuthority('ROLE_DOCTOR')")
     public ResponseEntity<List<AppointmentDTO>> getMySchedule(Authentication authentication) {
         String doctorEmail = authentication.getName();
         List<AppointmentDTO> appointments = appointmentService.getAppointmentsForDoctor(doctorEmail);
