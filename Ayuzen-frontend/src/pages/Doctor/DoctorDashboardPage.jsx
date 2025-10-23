@@ -11,11 +11,11 @@ const DoctorDashboardPage = () => {
         const fetchSchedule = async () => {
             setIsLoading(true);
             try {
-                const response = await apiClient.get('/doctor/my-appointments');
+                const response = await apiClient.get('/doctors/my-appointments');
                 setAppointments(response.data);
             } catch (err) {
                 setError('Failed to fetch your schedule.');
-                console.error("Fetch schedule error:", err);
+                
             } finally {
                 setIsLoading(false);
             }
