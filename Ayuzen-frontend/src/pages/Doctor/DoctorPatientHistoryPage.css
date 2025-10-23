@@ -78,3 +78,29 @@
 .status-completed { background-color: #e0e7ff; color: #4338ca; }
 
 .error-message { color: #b91c1c; }
+/* ADD THESE STYLES TO YOUR EXISTING DoctorPatientHistoryPage.css FILE */
+
+.prescription-section {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed #e2e8f0;
+}
+
+.write-prescription-btn {
+    background-color: #0d9488;
+    color: white;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.view-prescription {
+    font-size: 0.9rem;
+    color: #475569;
+}
+.view-prescription h4 {
+    margin: 0 0 0.5rem 0;
+    color: #1e293b;
+}
