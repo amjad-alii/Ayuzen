@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
@@ -34,5 +35,15 @@ public class DoctorController {
         String doctorEmail = authentication.getName();
         List<AppointmentDTO> appointments = appointmentService.getAppointmentsForDoctor(doctorEmail);
         return ResponseEntity.ok(appointments);
+    }
+
+    @GetMapping("/patients/{patientId}/history")
+    public ResponseEntity<List<AppointmentDTO>> getPatientHistory(
+            @PathVariable Long patientId,
+            Authentication authentication) {
+
+        String doctorEmail = authentication.getName();
+        List<AppointmentDTO> history = appointmentService.getPatientHistoryForDoctor(doctorEmail, patientId);
+        return ResponseEntity.ok(history);
     }
 }

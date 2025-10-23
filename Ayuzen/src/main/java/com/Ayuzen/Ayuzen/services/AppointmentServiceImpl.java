@@ -147,5 +147,23 @@ public class AppointmentServiceImpl implements AppointmentService {
                 .map(appointment -> modelMapper.map(appointment, AppointmentDTO.class))
                 .collect(Collectors.toList());
     }
+
+    @Override
+    @Transactional
+    public List<AppointmentDTO> getPatientHistoryForDoctor(String doctorEmail, Long patientId) {
+
+        // 1. Find the logged-in doctor
+        Doctor doctor = doctorRepository.findByUserEmail(doctorEmail)
+                .orElseThrow(() -> new RuntimeException("Doctor profile not found for email: " + doctorEmail));
+
+        // 2. Fetch appointments using the new, secure repository method
+        // This ensures a doctor can only see their OWN appointments with this patient.
+        List<Appointment> appointments = appointmentRepository.findByUserIdAndDoctorId(patientId, doctor.getId());
+
+        // 3. Map to DTOs and return
+        return appointments.stream()
+                .map(appointment -> modelMapper.map(appointment, AppointmentDTO.class))
+                .collect(Collectors.toList());
+    }
     // 5. The manual convertToDto method is no longer needed and can be deleted.
 }

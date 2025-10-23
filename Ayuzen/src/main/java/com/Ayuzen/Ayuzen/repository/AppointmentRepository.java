@@ -19,4 +19,5 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     @Query("SELECT SUM(d.fee) FROM Appointment a JOIN a.doctor d WHERE a.appointmentDateTime >= :startOfDay AND a.appointmentDateTime < :endOfDay AND a.status = 'CONFIRMED'")
     Double findTotalRevenueForDay(@Param("startOfDay") LocalDateTime startOfDay, @Param("endOfDay") LocalDateTime endOfDay);
     List<Appointment> findByDoctorId(Long doctorId);
+    List<Appointment> findByUserIdAndDoctorId(Long userId, Long doctorId);
 }
