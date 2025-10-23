@@ -18,7 +18,7 @@ const EPrescriptionPad = ({ appointmentId, patientName, onSave, onCancel }) => {
         e.preventDefault();
         setIsSubmitting(true);
         try {
-            const response = await apiClient.post(`/doctor/appointments/${appointmentId}/prescriptions`, formData);
+            const response = await apiClient.post(`/doctors/appointments/${appointmentId}/prescriptions`, formData);
             onSave(response.data); // Pass the saved prescription back to the parent
         } catch (err) {
             alert('Failed to save prescription.');

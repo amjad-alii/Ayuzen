@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import apiClient from '../../services/authService';
-import EPrescriptionPad from './EPrescriptionPad'; // Import the new component
+import EPrescriptionPad from './EPrescriptionPad';
 import './DoctorPatientHistoryPage.css';
 
 const DoctorPatientHistoryPage = () => {
@@ -10,38 +10,46 @@ const DoctorPatientHistoryPage = () => {
     const [appointments, setAppointments] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-
-    // State to manage which prescription pad is open
     const [writingPrescriptionFor, setWritingPrescriptionFor] = useState(null); // Holds appointment ID
 
     useEffect(() => {
         fetchHistory();
-    }, [patientId]);
+    }, [patientId]); // Re-fetch if patientId changes
 
     const fetchHistory = async () => {
         setIsLoading(true);
         setError(null);
         try {
+            // CORRECTED API URL: Should be /doctor/patients/...
             const response = await apiClient.get(`/doctors/patients/${patientId}/history`);
+            
             // Sort appointments by date, most recent first
             const sortedAppointments = response.data.sort((a, b) => new Date(b.appointmentDateTime) - new Date(a.appointmentDateTime));
             setAppointments(sortedAppointments);
+            
+            // Set patient name from the first appointment if available
             if (sortedAppointments.length > 0) {
                 setPatientName(sortedAppointments[0].patientName);
+            } else {
+                 setPatientName(`Patient ID: ${patientId}`); // Fallback if no appointments found
             }
         } catch (err) {
-            setError('Failed to fetch patient history.');
+            setError('Failed to fetch patient history. Please ensure the backend is running and you are authorized.');
+            console.error("Fetch patient history error:", err);
         } finally {
             setIsLoading(false);
         }
     };
 
+    // Called after a prescription is successfully saved
     const handlePrescriptionSaved = (savedPrescription) => {
-        // Optionally update the appointment in state to show prescription exists
-        console.log("Prescription saved:", savedPrescription);
-        setWritingPrescriptionFor(null); // Close the pad
-        // We could ideally fetch just the updated appointment, but refetching all is simpler for now
-        fetchHistory(); 
+        // Update the state more efficiently: only modify the affected appointment
+        setAppointments(prev => prev.map(appt => 
+            appt.id === savedPrescription.appointmentId 
+            ? { ...appt, prescription: savedPrescription } // Add the prescription object to the appointment
+            : appt
+        ));
+        setWritingPrescriptionFor(null); // Close the prescription pad
     };
 
     if (isLoading) return <h2>Loading Patient History...</h2>;
@@ -50,7 +58,7 @@ const DoctorPatientHistoryPage = () => {
     return (
         <div className="patient-history-page">
             <header className="page-header">
-                <h1>Appointment History for {patientName || `Patient ID: ${patientId}`}</h1>
+                <h1>Appointment History for {patientName}</h1>
                 <Link to="/doctor/dashboard" className="back-button">← Back to Schedule</Link>
             </header>
 
@@ -67,12 +75,16 @@ const DoctorPatientHistoryPage = () => {
                             
                             {/* --- Prescription Section --- */}
                             <div className="prescription-section">
-                                {appt.prescription ? ( // Check if a prescription exists (needs backend to send this)
+                                {/* Display existing prescription */}
+                                {appt.prescription ? (
                                      <div className="view-prescription">
-                                         <h4>Prescription Issued:</h4>
-                                         <p><strong>Diagnosis:</strong> {appt.prescription.diagnosis}</p>
-                                         <p><strong>Medicines:</strong> {appt.prescription.medicines}</p>
+                                         <h4>Prescription Issued ({appt.prescription.createdAt ? new Date(appt.prescription.createdAt).toLocaleDateString() : 'N/A'}):</h4>
+                                         <p><strong>Diagnosis:</strong> {appt.prescription.diagnosis || 'N/A'}</p>
+                                         {/* Display medicines - consider formatting if it's JSON */}
+                                         <p><strong>Medicines:</strong> {appt.prescription.medicines || 'N/A'}</p>
+                                         <p><strong>Advice:</strong> {appt.prescription.advice || 'N/A'}</p>
                                      </div>
+                                // Show the form if we are writing for this specific appointment
                                 ) : writingPrescriptionFor === appt.id ? (
                                     <EPrescriptionPad 
                                         appointmentId={appt.id}
@@ -80,8 +92,8 @@ const DoctorPatientHistoryPage = () => {
                                         onSave={handlePrescriptionSaved}
                                         onCancel={() => setWritingPrescriptionFor(null)}
                                     />
+                                // Show the "Write" button only if no prescription exists yet and the appointment status is appropriate
                                 ) : (
-                                    // Only show button if appointment is completed or confirmed (adjust as needed)
                                     (appt.status === 'COMPLETED' || appt.status === 'CONFIRMED') &&
                                     <button 
                                         className="write-prescription-btn" 
