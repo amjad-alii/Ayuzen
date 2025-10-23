@@ -33,6 +33,7 @@ import PatientHistoryPage from "./pages/admin/PatientHistoryPage";
 import ClinicSettingsPage from "./pages/admin/ClinicSettingsPage";
 
 // --- Doctor Page Imports ---
+import DoctorPatientHistoryPage from "./pages/doctor/DoctorPatientHistoryPage";
 import DoctorDashboardPage from './pages/doctor/DoctorDashboardPage'; // 2. Import Doctor Page
 
 // --- Main Public Application Layout ---
@@ -94,6 +95,7 @@ function App() {
         <Route element={<DoctorRoute />}>
           {/* 3. Add the doctor dashboard route */}
           <Route path="/doctor/dashboard" element={<DoctorDashboardPage />} />
+          <Route path="/doctor/patients/:patientId/history" element={<DoctorPatientHistoryPage />} />
         </Route>
 
         {/* Not Found Route */}
