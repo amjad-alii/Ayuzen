@@ -31,4 +31,7 @@ public class Appointment {
     private AppointmentStatus status;
 
     private String notes;
+
+    @OneToOne(mappedBy = "appointment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Prescription prescription;
 }

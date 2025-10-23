@@ -18,4 +18,5 @@ public class AppointmentDTO {
     private LocalDateTime appointmentDateTime;
     private AppointmentStatus status;
     private String notes;
+    private PrescriptionDTO prescription;
 }

@@ -49,7 +49,7 @@ public class DoctorController {
         List<AppointmentDTO> history = appointmentService.getPatientHistoryForDoctor(doctorEmail, patientId);
         return ResponseEntity.ok(history);
     }
-
+    @PostMapping("/appointments/{appointmentId}/prescriptions")
     public ResponseEntity<PrescriptionDTO> createPrescription(
             @PathVariable Long appointmentId,
             @RequestBody PrescriptionDTO prescriptionDTO,
