@@ -1,0 +1,31 @@
+.doctor-schedule-page {
+    max-width: 900px;
+    margin: 2rem auto;
+}
+
+.doctor-schedule-page h1 {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.schedule-section {
+    background-color: #fff;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-bottom: 2rem;
+}
+
+.schedule-section h2 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.schedule-section p {
+    color: #6c757d;
+    margin-bottom: 1.5rem;
+}
+
+.error-message {
+    color: #b91c1c;
+}

@@ -1,0 +1,100 @@
+.time-block-manager {
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 1.5rem;
+    background-color: #f8fafc;
+}
+
+.add-block-form h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #343a40;
+}
+
+.add-block-form .form-row {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-end; /* Align items vertically */
+    margin-bottom: 1rem;
+}
+
+.date-picker-group {
+    display: flex;
+    flex-direction: column;
+}
+.date-picker-group label {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+.date-picker-group .react-datepicker-wrapper input {
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.reason-row input {
+    flex-grow: 1;
+    padding: 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.add-block-btn {
+    background-color: #0d9488;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap; /* Prevent button text wrapping */
+}
+
+
+.existing-blocks {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e2e8f0;
+}
+.existing-blocks h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #343a40;
+}
+.existing-blocks ul {
+    list-style: none;
+    padding: 0;
+}
+.existing-blocks li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #eee;
+}
+.existing-blocks li:last-child {
+    border-bottom: none;
+}
+.block-time {
+    font-weight: 500;
+}
+.block-reason {
+    color: #6c757d;
+    font-style: italic;
+    margin: 0 1rem;
+    flex-grow: 1; /* Pushes delete button to the right */
+}
+.delete-block-btn {
+    background-color: #fee2e2;
+    color: #b91c1c;
+    border: none;
+    border-radius: 50%;
+    width: 28px;
+    height: 28px;
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+}
