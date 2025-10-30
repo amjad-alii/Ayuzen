@@ -2,10 +2,9 @@ package com.Ayuzen.Ayuzen.controlers;
 
 
 
-import com.Ayuzen.Ayuzen.dto.AppointmentDTO;
-import com.Ayuzen.Ayuzen.dto.DoctorDTO;
-import com.Ayuzen.Ayuzen.dto.PrescriptionDTO;
+import com.Ayuzen.Ayuzen.dto.*;
 import com.Ayuzen.Ayuzen.services.AppointmentService;
+import com.Ayuzen.Ayuzen.services.DoctorAvailabilityService;
 import com.Ayuzen.Ayuzen.services.DoctorService;
 import com.Ayuzen.Ayuzen.services.PrescriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +26,8 @@ public class DoctorController {
     private AppointmentService appointmentService;
     @Autowired
     private PrescriptionService prescriptionService;
+    @Autowired
+    private DoctorAvailabilityService availabilityService;
 
     @GetMapping
     public ResponseEntity<List<DoctorDTO>> getAllDoctors() {
@@ -58,5 +59,41 @@ public class DoctorController {
         String doctorEmail = authentication.getName();
         PrescriptionDTO createdPrescription = prescriptionService.createPrescription(appointmentId, prescriptionDTO, doctorEmail);
         return new ResponseEntity<>(createdPrescription, HttpStatus.CREATED);
+    }
+
+    // --- NEW AVAILABILITY ENDPOINTS ---
+
+    @GetMapping("/availability/rules")
+    public ResponseEntity<List<DoctorAvailabilityRuleDTO>> getAvailabilityRules(Authentication authentication) {
+        String email = authentication.getName();
+        return ResponseEntity.ok(availabilityService.getAvailabilityRules(email));
+    }
+
+    @PutMapping("/availability/rules")
+    public ResponseEntity<List<DoctorAvailabilityRuleDTO>> setAvailabilityRules(
+            @RequestBody List<DoctorAvailabilityRuleDTO> rules, Authentication authentication) {
+        String email = authentication.getName();
+        return ResponseEntity.ok(availabilityService.setAvailabilityRules(email, rules));
+    }
+
+    @GetMapping("/availability/blocks")
+    public ResponseEntity<List<DoctorTimeBlockDTO>> getTimeBlocks(Authentication authentication) {
+        String email = authentication.getName();
+        return ResponseEntity.ok(availabilityService.getTimeBlocks(email));
+    }
+
+    @PostMapping("/availability/blocks")
+    public ResponseEntity<DoctorTimeBlockDTO> addTimeBlock(
+            @RequestBody DoctorTimeBlockDTO block, Authentication authentication) {
+        String email = authentication.getName();
+        DoctorTimeBlockDTO newBlock = availabilityService.addTimeBlock(email, block);
+        return new ResponseEntity<>(newBlock, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/availability/blocks/{blockId}")
+    public ResponseEntity<Void> deleteTimeBlock(@PathVariable Long blockId, Authentication authentication) {
+        String email = authentication.getName();
+        availabilityService.deleteTimeBlock(email, blockId);
+        return ResponseEntity.noContent().build();
     }
 }
