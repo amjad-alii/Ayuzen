@@ -53,16 +53,16 @@ public class SecurityConfig {
                 .cors(cors -> {})
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        // Rule 1: Public endpoints
-                        .requestMatchers("/api/auth/**", "/api/doctors").permitAll()
+                        // Rule 1: Allow public access to auth and ALL public doctor endpoints
+                        .requestMatchers("/api/auth/**", "/api/doctors/**").permitAll()
 
                         // Rule 2: Admin endpoints
                         .requestMatchers("/api/admin/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_RECEPTIONIST")
 
-                        // Rule 3: THIS IS THE FIX. Secure doctor endpoints.
+                        // Rule 3: Doctor endpoints
                         .requestMatchers("/api/doctor/**").hasAuthority("ROLE_DOCTOR")
 
-                        // Rule 4: All other requests must be authenticated
+                        // Rule 4: All other requests
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

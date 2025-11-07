@@ -20,4 +20,10 @@ public interface AppointmentRepository extends JpaRepository<Appointment, Long> 
     Double findTotalRevenueForDay(@Param("startOfDay") LocalDateTime startOfDay, @Param("endOfDay") LocalDateTime endOfDay);
     List<Appointment> findByDoctorId(Long doctorId);
     List<Appointment> findByUserIdAndDoctorId(Long userId, Long doctorId);
+
+    @Query("SELECT a FROM Appointment a WHERE a.doctor.id = :doctorId AND a.appointmentDateTime >= :startOfDay AND a.appointmentDateTime < :endOfDay AND a.status = 'CONFIRMED'")
+    List<Appointment> findByDoctorIdAndDateRange(
+            @Param("doctorId") Long doctorId,
+            @Param("startOfDay") LocalDateTime startOfDay,
+            @Param("endOfDay") LocalDateTime endOfDay);
 }
