@@ -50,6 +50,13 @@ const DoctorDashboardPage = () => {
                         <Link to={`/doctor/patients/${appt.userId}/history`} className="view-details-btn">
                             View History
                         </Link>
+
+                        <Link 
+                            to={`/doctor/consultation/${appt.id}/patient/${appt.userId}`} 
+                            className="view-details-btn"
+                        >
+                            Start Consultation
+                        </Link>
                     </div>
                 )) : (
                     <p>You have no appointments scheduled.</p>

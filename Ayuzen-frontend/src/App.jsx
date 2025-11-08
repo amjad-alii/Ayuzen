@@ -36,6 +36,7 @@ import ClinicSettingsPage from "./pages/admin/ClinicSettingsPage";
 import DoctorPatientHistoryPage from "./pages/doctor/DoctorPatientHistoryPage";
 import DoctorDashboardPage from './pages/doctor/DoctorDashboardPage';
 import DoctorSchedulePage from './pages/doctor/DoctorSchedulePage' ;
+import ConsultationPage from "./pages/doctor/ConsultationPage";
 
 
 // --- Main Public Application Layout ---
@@ -99,6 +100,7 @@ function App() {
           <Route path="/doctor/dashboard" element={<DoctorDashboardPage />} />
           <Route path="/doctor/patients/:patientId/history" element={<DoctorPatientHistoryPage />} />
           <Route path="/doctor/schedule" element={<DoctorSchedulePage />} />
+          <Route path="/doctor/consultation/:appointmentId/patient/:patientId" element={<ConsultationPage />} />
         </Route>
 
         {/* Not Found Route */}
