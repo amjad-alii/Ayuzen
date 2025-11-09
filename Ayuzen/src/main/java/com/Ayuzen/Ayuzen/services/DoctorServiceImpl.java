@@ -6,6 +6,8 @@ import com.Ayuzen.Ayuzen.repository.DoctorRepository;
 import org.modelmapper.ModelMapper; // Import ModelMapper
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,5 +55,13 @@ public class DoctorServiceImpl implements DoctorService {
             throw new RuntimeException("Doctor not found with id: " + id);
         }
         doctorRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public DoctorDTO getDoctorById(Long id) {
+        Doctor doctor = doctorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Doctor not found with id: " + id));
+        return modelMapper.map(doctor, DoctorDTO.class);
     }
 }

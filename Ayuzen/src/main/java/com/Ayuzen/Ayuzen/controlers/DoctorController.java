@@ -29,11 +29,6 @@ public class DoctorController {
     @Autowired
     private DoctorAvailabilityService availabilityService;
 
-    @GetMapping
-    public ResponseEntity<List<DoctorDTO>> getAllDoctors() {
-        return ResponseEntity.ok(doctorService.getAllDoctors());
-    }
-
     @GetMapping("/my-appointments")
     public ResponseEntity<List<AppointmentDTO>> getMySchedule(Authentication authentication) {
         String doctorEmail = authentication.getName();
