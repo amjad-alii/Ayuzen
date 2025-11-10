@@ -5,7 +5,7 @@ import { useAppointments } from '../context/AppointmentContext';
 import apiClient from '../services/authService';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
-import './DoctorProfilePage.css'; // Make sure this CSS file exists
+import './DoctorProfilePage.css';
 import Button from '../components/common/Button';
 
 const DoctorProfilePage = () => {
@@ -26,9 +26,8 @@ const DoctorProfilePage = () => {
         const fetchDoctorProfile = async () => {
             setIsLoading(true);
             try {
-                // We need a public endpoint to get a single doctor's details
-                // Assuming /api/doctors/{id} exists
-                const response = await apiClient.get(`/doctors/${doctorId}`);
+                // Calls the public endpoint
+                const response = await apiClient.get(`/public/doctors/${doctorId}`);
                 setDoctor(response.data);
             } catch (err) {
                 console.error("Failed to fetch doctor profile", err);
@@ -48,7 +47,7 @@ const DoctorProfilePage = () => {
             setSelectedSlot(null); // Reset selected slot
             try {
                 const dateString = selectedDate.toISOString().split('T')[0]; // Format as YYYY-MM-DD
-                const response = await apiClient.get(`/doctors/${doctorId}/availability?date=${dateString}`);
+                const response = await apiClient.get(`/public/doctors/${doctorId}/availability?date=${dateString}`);
                 setAvailableSlots(response.data);
             } catch (err) {
                 console.error("Failed to fetch slots", err);
@@ -72,13 +71,13 @@ const DoctorProfilePage = () => {
         }
 
         try {
-            // Call the booking function from the patient's AppointmentContext
             await bookAppointment({
                 doctorId: doctor.id,
                 appointmentDateTime: selectedSlot,
-                // Add other details as needed
+                doctorName: doctor.name,
+                doctorSpecialty: doctor.specialty
             });
-            alert(`Booking confirmed with Dr. ${doctor.name}!`);
+            alert(`Booking confirmed with Dr. ${doctor.name} at ${new Date(selectedSlot).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}!`);
             navigate('/my-appointments');
         } catch (err) {
             alert("Failed to create appointment.");
@@ -96,7 +95,7 @@ const DoctorProfilePage = () => {
                 <div className="profile-header-info">
                     <h1>Dr. {doctor.name}</h1>
                     <p className="specialty">{doctor.specialty}</p>
-                    <p className="location">{doctor.qualification}</p>
+                    <p className="location">{doctor.qualification} - {doctor.experience} years experience</p>
                 </div>
             </div>
             
@@ -107,8 +106,8 @@ const DoctorProfilePage = () => {
                     <DatePicker
                         selected={selectedDate}
                         onChange={(date) => setSelectedDate(date)}
-                        minDate={new Date()}
-                        inline // Show the calendar directly on the page
+                        minDate={new Date()} // Can't book in the past
+                        inline 
                     />
                 </div>
 
@@ -131,7 +130,7 @@ const DoctorProfilePage = () => {
                                     </button>
                                 );
                             }) : (
-                                <p>No available slots for this day.</p>
+                                <p>No available slots for this day. Please select another date.</p>
                             )}
                         </div>
                     )}
@@ -140,7 +139,7 @@ const DoctorProfilePage = () => {
 
             {/* Step 3: Confirm Booking */}
             <div className="confirm-section">
-                <Button onClick={handleBooking} disabled={!selectedSlot}>
+                <Button onClick={handleBooking} disabled={!selectedSlot || isSlotsLoading}>
                     {isAuthenticated ? 'Confirm Booking' : 'Login to Book'}
                 </Button>
             </div>
