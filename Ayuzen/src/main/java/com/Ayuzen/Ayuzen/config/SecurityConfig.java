@@ -53,8 +53,8 @@ public class SecurityConfig {
                 .cors(cors -> {})
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        // Rule 1: Allow public access to auth and ALL public doctor endpoints
-                        .requestMatchers("/api/auth/**", "/api/doctors/**").permitAll()
+                        // Rule 1: THIS IS THE FIX. Add /api/public/** to the public list.
+                        .requestMatchers("/api/auth/**", "/api/public/**").permitAll()
 
                         // Rule 2: Admin endpoints
                         .requestMatchers("/api/admin/**").hasAnyAuthority("ROLE_ADMIN", "ROLE_RECEPTIONIST")
@@ -62,7 +62,10 @@ public class SecurityConfig {
                         // Rule 3: Doctor endpoints
                         .requestMatchers("/api/doctor/**").hasAuthority("ROLE_DOCTOR")
 
-                        // Rule 4: All other requests
+                        // Rule 4: Patient endpoints (for booking)
+                        .requestMatchers("/api/appointments/**").hasAuthority("ROLE_PATIENT")
+
+                        // Rule 5: All other requests
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -73,4 +76,3 @@ public class SecurityConfig {
         return http.build();
     }
 }
-
