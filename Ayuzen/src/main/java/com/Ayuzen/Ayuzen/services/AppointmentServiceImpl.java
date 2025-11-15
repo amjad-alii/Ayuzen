@@ -3,11 +3,9 @@ package com.Ayuzen.Ayuzen.services;
 import com.Ayuzen.Ayuzen.dto.AdminBookingRequestDTO;
 import com.Ayuzen.Ayuzen.dto.AppointmentDTO;
 import com.Ayuzen.Ayuzen.dto.BookingRequestDTO;
-import com.Ayuzen.Ayuzen.entities.Appointment;
-import com.Ayuzen.Ayuzen.entities.AppointmentStatus;
-import com.Ayuzen.Ayuzen.entities.Doctor;
-import com.Ayuzen.Ayuzen.entities.User;
+import com.Ayuzen.Ayuzen.entities.*;
 import com.Ayuzen.Ayuzen.repository.AppointmentRepository;
+import com.Ayuzen.Ayuzen.repository.DependentRepository;
 import com.Ayuzen.Ayuzen.repository.DoctorRepository;
 import com.Ayuzen.Ayuzen.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -34,23 +32,39 @@ public class AppointmentServiceImpl implements AppointmentService {
     @Autowired
     private ModelMapper modelMapper; // 2. Inject the ModelMapper bean
 
-    @Override
+    @Autowired
+    private DependentRepository dependentRepository;
+
     public AppointmentDTO createAppointment(BookingRequestDTO bookingRequestDTO, String userEmail) {
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         Doctor doctor = doctorRepository.findById(bookingRequestDTO.getDoctorId())
                 .orElseThrow(() -> new RuntimeException("Doctor not found"));
 
-        Appointment appointment = Appointment.builder()
-                .user(user)
-                .doctor(doctor)
-                .appointmentDateTime(bookingRequestDTO.getAppointmentDateTime())
-                .status(AppointmentStatus.CONFIRMED)
-                .notes(bookingRequestDTO.getNotes())
-                .build();
+        Appointment appointment = new Appointment();
+        appointment.setUser(user); // The user who is booking
+        appointment.setDoctor(doctor);
+        appointment.setAppointmentDateTime(bookingRequestDTO.getAppointmentDateTime());
+        appointment.setStatus(AppointmentStatus.CONFIRMED);
+        appointment.setNotes(bookingRequestDTO.getNotes());
+
+        // --- 2. THIS IS THE UPDATED LOGIC ---
+        if (bookingRequestDTO.getDependentId() != null) {
+            // If a dependentId is provided, find the dependent
+            Dependent dependent = dependentRepository.findById(bookingRequestDTO.getDependentId())
+                    .orElseThrow(() -> new RuntimeException("Dependent not found"));
+
+            // Security check: Make sure the dependent belongs to the logged-in user
+            if (!dependent.getUser().getId().equals(user.getId())) {
+                throw new AccessDeniedException("This dependent does not belong to your account.");
+            }
+            // Set the appointment for the dependent
+            appointment.setDependent(dependent);
+        }
+        // If dependentId is null, the appointment is for the main user (appointment.dependent remains null)
+        // --- END OF UPDATED LOGIC ---
 
         Appointment savedAppointment = appointmentRepository.save(appointment);
-        // 3. Use ModelMapper for conversion
         return modelMapper.map(savedAppointment, AppointmentDTO.class);
     }
 

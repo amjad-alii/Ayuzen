@@ -12,4 +12,5 @@ public class BookingRequestDTO {
     private Long doctorId;
     private LocalDateTime appointmentDateTime;
     private String notes;
+    private Long dependentId;
 }

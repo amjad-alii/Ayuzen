@@ -24,6 +24,11 @@ public class Appointment {
     @JoinColumn(name = "doctor_id", nullable = false)
     private Doctor doctor;
 
+    // ADD THIS NEW FIELD
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "dependent_id", nullable = true) // Nullable: if null, it's for the main user
+    private Dependent dependent;
+
     @Column(nullable = false)
     private LocalDateTime appointmentDateTime;
 
