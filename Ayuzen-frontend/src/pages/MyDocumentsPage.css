@@ -33,6 +33,10 @@
 .upload-form input[type="file"] {
     flex-grow: 1;
     font-size: 0.95rem;
+    /* Basic styling for file input */
+    border: 1px solid #cbd5e1;
+    border-radius: 6px;
+    padding: 0.5rem;
 }
 
 .upload-form button {
@@ -90,4 +94,9 @@
 .file-date {
     font-size: 0.9rem;
     color: #64748b;
+}
+
+.error-message {
+    color: #b91c1c;
+    font-weight: bold;
 }

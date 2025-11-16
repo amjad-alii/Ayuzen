@@ -1,4 +1,4 @@
-import apiClient from './authService'; // Reuse the configured axios instance
+import apiClient from './authService';
 
 /**
  * Fetches all documents for the logged-in patient.
@@ -14,7 +14,7 @@ export const getDocumentsApi = () => {
 export const uploadDocumentApi = (file) => {
     // We must use FormData to send files
     const formData = new FormData();
-    formData.append('file', file); // The key "file" must match your @RequestParam("file") in the backend
+    formData.append('file', file); // The key "file" must match @RequestParam("file")
 
     return apiClient.post('/patient/documents/upload', formData, {
         headers: {
@@ -23,11 +23,3 @@ export const uploadDocumentApi = (file) => {
         },
     });
 };
-
-/**
- * Deletes a document by its ID.
- * (We'll add the backend for this later, but here's the frontend call)
- */
-// export const deleteDocumentApi = (id) => {
-//     return apiClient.delete(`/patient/documents/${id}`);
-// };

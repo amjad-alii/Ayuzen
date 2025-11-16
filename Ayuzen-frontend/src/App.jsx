@@ -21,6 +21,7 @@ import DoctorProfilePage from "./pages/DoctorProfilePage";
 import DoctorsPage from "./pages/DoctorsPage";
 import AboutPage from "./pages/AboutPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import MyDocumentsPage from './pages/MyDocumentsPage';
 
 // --- Admin Page Imports ---
 import AdminLayout from "./pages/admin/AdminLayout";
@@ -38,6 +39,11 @@ import DoctorDashboardPage from './pages/doctor/DoctorDashboardPage';
 import DoctorSchedulePage from './pages/doctor/DoctorSchedulePage' ;
 import ConsultationPage from "./pages/doctor/ConsultationPage";
 
+import FamilyMembersPage from './pages/FamilyMembersPage';
+
+// --- CHATBOT IMPORT ---
+import Chatbot from "./components/chatbot/Chatbot";
+
 
 // --- Main Public Application Layout ---
 const AppLayout = () => (
@@ -46,6 +52,7 @@ const AppLayout = () => (
     <main style={{ padding: "2rem" }}>
       <Outlet />
     </main>
+    <Chatbot />
   </>
 );
 
@@ -73,6 +80,8 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route path="/my-appointments" element={<AppointmentsPage />} />
           </Route>
+          <Route path="/my-records" element={<MyDocumentsPage />} />
+          <Route path="/my-family" element={<FamilyMembersPage />} />
         </Route>
 
         {/* Secure Admin Routes */}
