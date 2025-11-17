@@ -65,7 +65,10 @@ public class SecurityConfig {
                         // Rule 4: Patient endpoints (for booking)
                         .requestMatchers("/api/appointments/**").hasAuthority("ROLE_PATIENT")
 
-                        // Rule 5: All other requests
+                        // Rule 5: THIS IS THE FIX. Allow any authenticated user (Patient, Doctor, etc.) to use the chat.
+                        .requestMatchers("/api/chat/**").authenticated()
+
+                        // Rule 6: All other requests
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
