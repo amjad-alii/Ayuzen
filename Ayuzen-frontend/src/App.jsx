@@ -40,6 +40,7 @@ import DoctorSchedulePage from './pages/doctor/DoctorSchedulePage' ;
 import ConsultationPage from "./pages/doctor/ConsultationPage";
 
 import FamilyMembersPage from './pages/FamilyMembersPage';
+import MyHealthIdPage from './pages/MyHealthIdPage';
 
 // --- CHATBOT IMPORT ---
 import Chatbot from "./components/chatbot/Chatbot";
@@ -82,6 +83,7 @@ function App() {
           </Route>
           <Route path="/my-records" element={<MyDocumentsPage />} />
           <Route path="/my-family" element={<FamilyMembersPage />} />
+          <Route path="/my-health-id" element={<MyHealthIdPage />} />
         </Route>
 
         {/* Secure Admin Routes */}

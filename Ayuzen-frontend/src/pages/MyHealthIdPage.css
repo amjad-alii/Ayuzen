@@ -1,0 +1,138 @@
+.abha-page-container {
+    max-width: 600px;
+    margin: 2rem auto;
+    text-align: center;
+}
+
+.abha-header {
+    margin-bottom: 2rem;
+}
+.abha-logo {
+    height: 60px;
+    margin-bottom: 1rem;
+}
+.abha-header h1 {
+    color: #f97316; /* ABHA Orange color */
+    margin: 0;
+}
+
+/* --- ABHA Card Styles --- */
+.abha-card {
+    background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+    border: 2px solid #fed7aa;
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    text-align: left;
+}
+
+.abha-card-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1.5rem;
+}
+
+.verified-badge {
+    background-color: #22c55e;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.abha-field {
+    margin-bottom: 1.5rem;
+}
+
+.abha-field label {
+    display: block;
+    font-size: 0.85rem;
+    color: #9a3412;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+}
+
+.abha-field p {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #431407;
+    margin: 0;
+    letter-spacing: 0.05em;
+}
+
+.abha-card-footer {
+    margin-top: 2rem;
+    border-top: 1px solid #fed7aa;
+    padding-top: 1rem;
+    font-size: 0.9rem;
+    color: #9a3412;
+}
+
+/* --- Form Styles --- */
+.create-abha-container {
+    background-color: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.step-form h3 {
+    margin-top: 0;
+    color: #334155;
+}
+
+.step-desc {
+    color: #64748b;
+    margin-bottom: 1.5rem;
+}
+
+.step-form input {
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1.1rem;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    letter-spacing: 0.1em;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.btn-primary, .btn-secondary {
+    flex: 1;
+    padding: 0.75rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    font-size: 1rem;
+}
+
+.btn-primary {
+    background-color: #f97316;
+    color: white;
+}
+.btn-primary:disabled {
+    background-color: #fdba74;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background-color: #f1f5f9;
+    color: #475569;
+}
+
+.error-message {
+    color: #ef4444;
+    background-color: #fef2f2;
+    padding: 0.75rem;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+}
