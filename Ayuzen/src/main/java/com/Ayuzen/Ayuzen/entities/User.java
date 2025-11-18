@@ -39,4 +39,10 @@ public class User {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Appointment> appointments;
+
+    @Column(unique = true)
+    private String abhaAddress;
+
+    @Column(unique = true)
+    private String abhaNumber;
 }
