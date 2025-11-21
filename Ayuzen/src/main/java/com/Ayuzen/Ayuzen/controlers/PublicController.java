@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api") // Mapped to the public root /api
+@RequestMapping("/api/public")
 public class PublicController {
 
     @Autowired
@@ -21,13 +21,19 @@ public class PublicController {
     @Autowired
     private AvailabilityService availabilityService;
 
-    // This is the public endpoint to get all doctors
+    // 1. ENDPOINT TO GET ALL DOCTORS (e.g., /api/public/doctors)
     @GetMapping("/doctors")
     public ResponseEntity<List<DoctorDTO>> getAllDoctors() {
         return ResponseEntity.ok(doctorService.getAllDoctors());
     }
 
-    // THIS IS THE NEW ENDPOINT for getting available slots
+    // 2. ENDPOINT TO GET A SINGLE DOCTOR PROFILE (e.g., /api/public/doctors/{id})
+    @GetMapping("/doctors/{id}")
+    public ResponseEntity<DoctorDTO> getDoctorById(@PathVariable Long id) {
+        return ResponseEntity.ok(doctorService.getDoctorById(id));
+    }
+
+    // 3. ENDPOINT FOR GETTING AVAILABLE SLOTS (e.g., /api/public/doctors/{id}/availability)
     @GetMapping("/doctors/{id}/availability")
     public ResponseEntity<List<LocalDateTime>> getDoctorAvailability(
             @PathVariable Long id,

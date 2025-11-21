@@ -63,11 +63,12 @@ public class SecurityConfig {
                         .requestMatchers("/api/doctor/**").hasAuthority("ROLE_DOCTOR")
 
                         // Rule 4: Patient endpoints (for booking)
-                        .requestMatchers("/api/appointments/**").hasAuthority("ROLE_PATIENT")
+                        .requestMatchers("/api/appointments/**", "/api/patient/**").hasAuthority("ROLE_PATIENT")
 
                         // Rule 5: THIS IS THE FIX. Allow any authenticated user (Patient, Doctor, etc.) to use the chat.
                         .requestMatchers("/api/chat/**").authenticated()
 
+                        .requestMatchers("/error").permitAll()                             // FIX: Stops the 403 loop when errors happen
                         // Rule 6: All other requests
                         .anyRequest().authenticated()
                 )
