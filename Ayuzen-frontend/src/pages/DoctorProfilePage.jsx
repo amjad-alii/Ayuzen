@@ -36,12 +36,12 @@ const DoctorProfilePage = () => {
         return () => { document.body.removeChild(script); };
     }, []);
     
-    // --- FETCH DOCTOR PROFILE (Fixing 404s) ---
+    // --- FETCH DOCTOR PROFILE (and FEE) ---
     useEffect(() => {
         const fetchDoctorProfile = async () => {
             setIsLoading(true);
             try {
-                // FIX: Path must be /public/doctors/ID (since PublicController is /api/public)
+                // Calls the public endpoint for doctor details
                 const response = await apiClient.get(`/public/doctors/${doctorId}`);
                 setDoctor(response.data);
             } catch (err) { console.error("Failed to fetch doctor profile", err); }
@@ -50,26 +50,23 @@ const DoctorProfilePage = () => {
         fetchDoctorProfile();
     }, [doctorId]);
 
-    // --- FETCH DEPENDENTS (Fixing 403 Forbidden - Only for authenticated patients) ---
+    // --- FETCH DEPENDENTS ---
     useEffect(() => {
         if (isAuthenticated) {
-            // FIX: The Patient Dependents controller is mapped to /api/patient/dependents
             apiClient.get('/api/patient/dependents')
                 .then(res => setDependents(res.data))
                 .catch(err => console.error("Failed to fetch dependents", err));
         }
     }, [isAuthenticated]);
 
-    // --- FETCH SLOTS (Fixing 404s) ---
+    // --- FETCH SLOTS ---
     useEffect(() => {
         if (!doctorId) return;
-
         const fetchSlots = async () => {
             setIsSlotsLoading(true);
             setSelectedSlot(null);
             try {
                 const dateString = selectedDate.toISOString().split('T')[0];
-                // FIX: Path must be /public/doctors/ID/availability
                 const response = await apiClient.get(`/public/doctors/${doctorId}/availability?date=${dateString}`);
                 setAvailableSlots(response.data);
             } catch (err) { setAvailableSlots([]); }
@@ -94,32 +91,35 @@ const DoctorProfilePage = () => {
         
         const bookingDataForOrder = {
             doctorId: doctor.id,
-            appointmentDateTime: selectedSlot,
+            appointmentDateTime: selectedSlot, // ISO String
             dependentId: selectedPatientId === 'myself' ? null : parseInt(selectedPatientId),
-            fee: doctorFee 
+            fee: doctorFee // Send fee to the backend to create the order
         };
 
         try {
-            // --- STEP 1: CREATE ORDER ID ON BACKEND (Uses /api/payment/create-order) ---
+            // --- STEP 1: CREATE ORDER ID ON BACKEND ---
+            // Ensure this path is exactly correct: /api/payment/create-order
             const orderResponse = await apiClient.post('/api/payment/create-order', bookingDataForOrder);
             
             const orderResponseData = JSON.parse(orderResponse.data);
             
             const options = {
                 key: orderResponseData.key_id, 
-                amount: orderResponseData.amount_paisa, 
+                amount: orderResponseData.amount_paisa, // Amount in paisa
                 currency: "INR",
                 name: "Ayuzen Clinic",
                 description: `Consultation with Dr. ${doctor.name}`,
                 order_id: orderResponseData.order_id,
                 
+                // --- STEP 2: PAYMENT SUCCESS CALLBACK (Frontend) ---
                 handler: async function (response) {
                     const verificationData = {
+                        // Razorpay signature details
                         razorpayPaymentId: response.razorpay_payment_id,
                         razorpayOrderId: response.razorpay_order_id,
                         razorpaySignature: response.razorpay_signature,
                         
-                        // Original booking details for final creation (sent back for security)
+                        // Original booking details for final creation
                         doctorId: doctor.id,
                         appointmentDateTime: selectedSlot,
                         dependentId: bookingDataForOrder.dependentId,
@@ -129,7 +129,7 @@ const DoctorProfilePage = () => {
                         // Final API call to verify signature and confirm the appointment in DB
                         await apiClient.post('/api/payment/verify-and-book', verificationData);
                         
-                        // Update patient state 
+                        // Update patient state (simulating successful booking)
                         await bookAppointment(verificationData); 
                         
                         alert("Payment successful and booking confirmed!");
@@ -146,6 +146,7 @@ const DoctorProfilePage = () => {
                 theme: { color: "#0d9488" }
             };
 
+            // Open the Razorpay Modal
             const paymentObject = new window.Razorpay(options);
             paymentObject.on('payment.failed', function (response) {
                 alert("Payment failed: " + response.error.description);
@@ -155,7 +156,8 @@ const DoctorProfilePage = () => {
 
         } catch (error) {
             console.error("Payment initiation failed:", error);
-            alert("Could not start payment. Please ensure the doctor has a fee set.");
+            // This alert is being shown because the backend returned a non-200 status (e.g., 400 Bad Request)
+            alert("Could not start payment. Check your Spring Boot console for the reason.");
         } finally {
             setIsPaymentProcessing(false);
         }
@@ -166,7 +168,15 @@ const DoctorProfilePage = () => {
 
     return (
         <div className="profile-container">
-            {/* ... Profile Header ... */}
+            {/* Doctor Profile Header */}
+            <div className="profile-header">
+                <img src={doctor.imageUrl || "https://cdn.jsdelivr.net/gh/AmjadAli9/assets/doctor-avatar.svg"} alt={`Dr. ${doctor.name}`} className="profile-image" />
+                <div className="profile-header-info">
+                    <h1>Dr. {doctor.name}</h1>
+                    <p className="specialty">{doctor.specialty}</p>
+                    <p className="location">{doctor.qualification} - {doctor.experience} years experience</p>
+                </div>
+            </div>
             
             <div className="profile-body booking-flow">
                 {/* Step 1: Select Date */}
