@@ -99,9 +99,9 @@ const DoctorProfilePage = () => {
         try {
             // --- STEP 1: CREATE ORDER ID ON BACKEND ---
             // Ensure this path is exactly correct: /api/payment/create-order
-            const orderResponse = await apiClient.post('/api/payment/create-order', bookingDataForOrder);
+            const orderResponse = await apiClient.post('/payment/create-order', bookingDataForOrder);
             
-            const orderResponseData = JSON.parse(orderResponse.data);
+            const orderResponseData = orderResponse.data;
             
             const options = {
                 key: orderResponseData.key_id, 
@@ -127,7 +127,7 @@ const DoctorProfilePage = () => {
 
                     try {
                         // Final API call to verify signature and confirm the appointment in DB
-                        await apiClient.post('/api/payment/verify-and-book', verificationData);
+                        await apiClient.post('/payment/verify-and-book', verificationData);
                         
                         // Update patient state (simulating successful booking)
                         await bookAppointment(verificationData); 
