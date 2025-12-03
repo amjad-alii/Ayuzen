@@ -97,9 +97,7 @@ const DoctorProfilePage = () => {
         };
 
         try {
-            // --- STEP 1: CREATE ORDER ID ON BACKEND ---
-            // Ensure this path is exactly correct: /api/payment/create-order
-            const orderResponse = await apiClient.post('/payment/create-order', bookingDataForOrder);
+            const orderResponse = await apiClient.post('api/payment/create-order', bookingDataForOrder);
             
             const orderResponseData = orderResponse.data;
             
